@@ -1,9 +1,15 @@
 import React from "react";
-import { Theme, withStyles, WithStyles } from "@material-ui/core/styles";
+import {
+  Theme,
+  withStyles,
+  WithStyles,
+  createStyles,
+} from "@material-ui/core/styles";
 
-const styles = (theme: Theme) => ({
-  root: {},
-});
+const styles = (theme: Theme) =>
+  createStyles({
+    root: {},
+  });
 
 interface MailTableProps extends WithStyles<typeof styles> {}
 

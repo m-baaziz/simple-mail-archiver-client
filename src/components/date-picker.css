@@ -1,0 +1,17 @@
+.DateInput {
+  width: 100px;
+}
+
+.DateInput_input {
+  padding: 0px;
+  outline: none;
+}
+
+.DateInput,
+.DateRangePickerInput_arrow {
+  margin-right: 8px;
+}
+
+.DateRangePickerInput_calendarIcon:focus {
+  outline: none;
+}
