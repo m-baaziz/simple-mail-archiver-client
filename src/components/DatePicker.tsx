@@ -7,37 +7,39 @@ import {
   createStyles,
 } from "@material-ui/core/styles";
 import { DateRangePicker } from "react-dates";
+import classNames from "classnames";
 
 import "react-dates/lib/css/_datepicker.css";
 import moment, { Moment } from "moment";
 import { SvgIcon } from "@material-ui/core";
-import { grey } from "@material-ui/core/colors";
 
-import { ReactComponent as CalendarIcon } from "../icons/icon_calendar.svg";
-import { ReactComponent as SearchIcon } from "../icons/icon_search.svg";
+import { ReactComponent as CalendarIcon } from "../assets/calendar.svg";
+import { ReactComponent as SearchIcon } from "../assets/search.svg";
 import "./date-picker.css";
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
       display: "flex",
-      marginLeft: 50,
-      marginTop: 50,
       paddingLeft: 5,
       width: 400,
       border: "2px solid #ccc",
       borderRadius: 8,
-      borderColor: grey[300],
+      borderColor: theme.palette.grey[300],
       backgroundColor: "white",
       justifyContent: "space-between",
     },
     searchContainer: {
       display: "flex",
-      backgroundColor: grey[200],
+      backgroundColor: theme.palette.grey[200],
       width: 60,
-      borderLeft: "2px solid #ccc",
+      border: "none",
+      borderLeft: "1px solid #ccc",
       borderRadius: "0px 8px 8px 0px",
       cursor: "pointer",
+      "&:focus": {
+        outline: "none",
+      },
     },
     searchIcon: {
       margin: "auto",
@@ -45,11 +47,12 @@ const styles = (theme: Theme) =>
   });
 
 interface DatePickerProps extends WithStyles<typeof styles> {
-  onSearchClick: (start: Moment | null, end: Moment | null) => void;
+  className?: string;
+  onSearchClick: (start: Date | null, end: Date | null) => void;
 }
 
 function DatePicker(props: DatePickerProps) {
-  const { classes, onSearchClick } = props;
+  const { classes, className, onSearchClick } = props;
 
   const [startDate, setStartDate] = React.useState<Moment | null>(moment());
   const [endDate, setEndDate] = React.useState<Moment | null>(moment());
@@ -67,12 +70,11 @@ function DatePicker(props: DatePickerProps) {
   };
 
   const handleSearchClick = () => {
-    onSearchClick(startDate, endDate);
+    onSearchClick(startDate?.toDate() || null, endDate?.toDate() || null);
   };
 
   return (
-    <div className={classes.root}>
-      {/* <Button onClick={handleBtnClick}> DEBUG </Button> */}
+    <div className={classNames(classes.root, className)}>
       <DateRangePicker
         startDate={startDate}
         endDate={endDate}
@@ -90,13 +92,13 @@ function DatePicker(props: DatePickerProps) {
         isOutsideRange={() => false}
         noBorder
       />
-      <div className={classes.searchContainer} onClick={handleSearchClick}>
+      <button className={classes.searchContainer} onClick={handleSearchClick}>
         <SvgIcon
           className={classes.searchIcon}
           component={SearchIcon}
           viewBox="0 0 17.9803 18"
         />
-      </div>
+      </button>
     </div>
   );
 }
