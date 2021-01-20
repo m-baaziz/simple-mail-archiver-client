@@ -19,10 +19,13 @@ export type SortOrder = "asc" | "desc";
 export function sortMails(
   mails: Mail[],
   key: SortKey,
-  order: SortOrder
+  order: SortOrder,
+  transform?: (value: any) => any
 ): Mail[] {
   return [...mails].sort((a, b) => {
-    const val = a[key] < b[key];
+    const val = transform
+      ? transform(a[key]) < transform(b[key])
+      : a[key] < b[key];
     const ret = (order === "asc" && val) || (order === "desc" && !val) ? -1 : 1;
     return ret;
   });

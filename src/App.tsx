@@ -49,7 +49,7 @@ interface AppProps extends WithStyles<typeof styles> {}
 function App(props: AppProps) {
   const { classes } = props;
   const endDate = new Date();
-  const startDate = subYears(endDate, 1);
+  const startDate = subYears(endDate, 2);
   const [start, setStart] = React.useState<Date | null>(startDate);
   const [end, setEnd] = React.useState<Date | null>(endDate);
   const [filteredMails, setFilteredMails] = React.useState<Mail[]>([]);

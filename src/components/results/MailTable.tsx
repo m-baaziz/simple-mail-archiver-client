@@ -22,6 +22,7 @@ import classNames from "classnames";
 import Header, { HeaderInfo } from "./Header";
 import Recipient from "./Recipient";
 import Subject from "./Subject";
+import From from "./From";
 import Clip from "./Clip";
 import { ReactComponent as MailIcon } from "../../assets/mail_sp.svg";
 import { ReactComponent as CarretIcon } from "../../assets/carret.svg";
@@ -116,7 +117,16 @@ function MailTable(props: MailTableProps) {
       setSortedMails([...mails]);
       return;
     }
-    setSortedMails(sortMails([...mails], sortKey, sortOrder));
+    const transform = (value: any) => {
+      if (sortKey === "to") {
+        return (value as string[]).join(", ").toLowerCase();
+      }
+      if (["from", "subject"].includes(sortKey)) {
+        return (value as string).toLowerCase();
+      }
+      return value;
+    };
+    setSortedMails(sortMails([...mails], sortKey, sortOrder, transform));
   }, [mails, sortKey, sortOrder]);
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -256,7 +266,7 @@ function MailTable(props: MailTableProps) {
                       align="left"
                       onClick={handleCellClick(mail.id)}
                     >
-                      {mail.from}
+                      <From from={mail.from} labelMaxWidth={150} />
                     </TableCell>
                     <TableCell
                       classes={{ root: classes.tableBodyCell }}
@@ -274,6 +284,7 @@ function MailTable(props: MailTableProps) {
                         subject={mail.subject}
                         attachments={mail.attachments}
                         showAttachments
+                        labelMaxWidth={420}
                       />
                     </TableCell>
                     <TableCell
@@ -310,7 +321,11 @@ function MailTable(props: MailTableProps) {
                           <div
                             className={classNames(classes.cellH, classes.smH1)}
                           >
-                            <div className={classes.bold}>{mail.from}</div>
+                            <From
+                              className={classes.bold}
+                              from={mail.from}
+                              labelMaxWidth={150}
+                            />
                             <div className={classes.cellH}>
                               {mail.attachments.length > 0 ? (
                                 <Clip className={classes.smClip} />
@@ -337,6 +352,7 @@ function MailTable(props: MailTableProps) {
                         subject={mail.subject}
                         attachments={mail.attachments}
                         showAttachments={false}
+                        labelMaxWidth={300}
                       />
                     </TableCell>
                   </>

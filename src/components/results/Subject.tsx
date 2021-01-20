@@ -7,6 +7,7 @@ import {
 } from "@material-ui/core/styles";
 import classNames from "classnames";
 
+import WithEllipsis from "../../hoc/WithEllipsis";
 import Clip from "./Clip";
 
 import { Attachment } from "../../models/Mail";
@@ -24,13 +25,27 @@ interface SubjectProps extends WithStyles<typeof styles> {
   subject: string;
   attachments: Attachment[];
   showAttachments: boolean;
+  labelMaxWidth: number;
 }
 
 function Subject(props: SubjectProps) {
-  const { classes, className, subject, attachments, showAttachments } = props;
+  const {
+    classes,
+    className,
+    subject,
+    attachments,
+    showAttachments,
+    labelMaxWidth,
+  } = props;
   return (
     <div className={classNames(classes.root, className)}>
-      <div className={classes.subject}>{subject}</div>
+      <WithEllipsis
+        className={classes.subject}
+        maxWidth={labelMaxWidth}
+        title={subject}
+      >
+        {subject}
+      </WithEllipsis>
       {showAttachments && attachments.length > 0 ? <Clip /> : null}
     </div>
   );

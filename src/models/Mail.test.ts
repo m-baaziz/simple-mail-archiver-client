@@ -29,8 +29,12 @@ test("sort mails", () => {
   const sortedByFromAsc = sortMails(mails, "from", "asc");
   const sortedByFromDesc = sortMails(mails, "from", "desc");
   const sortedByDate = sortMails(mails, "date", "asc");
+  const sortedByRecipient = sortMails(mails, "to", "desc", (value: any) =>
+    (value as string[]).join(", ").toLowerCase()
+  );
 
   expect(sortedByFromAsc).toEqual(mails);
   expect(sortedByFromDesc[0]).toEqual(mails[1]);
   expect(sortedByDate[0]).toEqual(mails[1]);
+  expect(sortedByRecipient).toEqual(mails);
 });

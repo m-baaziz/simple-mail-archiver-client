@@ -21,8 +21,6 @@ const styles = (theme: Theme) =>
       backgroundColor: theme.palette.grey[500],
       color: "white",
       borderRadius: 4,
-      // height: 20,
-      // width: 25,
     },
     hiddenCountLabel: {
       padding: "0px 3px 0px 3px",
