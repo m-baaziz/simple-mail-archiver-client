@@ -9,7 +9,7 @@ const mails: Mail[] = [
     to: ["zzz.zzz@example.com"],
     subject: "[ HR-888 ] Notice of official announcement",
     attachments: [],
-    content: "MAIL 1",
+    content: "Mail Content",
     date: new Date("2021-01-20T05:40:00"),
   },
   {
@@ -18,7 +18,7 @@ const mails: Mail[] = [
     to: ["yyy@example.com"],
     subject: '[web:333] "Web Contact"',
     attachments: [],
-    content: "MAIL 2",
+    content: "Mail Content",
     date: new Date("2021-01-12T15:10:00"),
   },
   {
@@ -30,7 +30,7 @@ const mails: Mail[] = [
       { name: "file_one.pdf", url: "https://link-to-attachment-1.com" },
       { name: "file_two.png", url: "https://link-to-attachment-2.com" },
     ],
-    content: "MAIL 2",
+    content: "Mail Content",
     date: new Date("2020-03-25T00:00:00"),
   },
   {
@@ -40,7 +40,7 @@ const mails: Mail[] = [
     subject:
       "[HR-887(Revised: Office Expansion Project Team)] Notice of official announcement",
     attachments: [],
-    content: "MAIL 2",
+    content: "Mail Content",
     date: new Date("2020-01-01T00:00:00"),
   },
   {
@@ -49,7 +49,7 @@ const mails: Mail[] = [
     to: ["sss@example.com", "aaa@example.com", "bbb@example.com"],
     subject: "[Github] Logout page",
     attachments: [],
-    content: "MAIL 2",
+    content: "Mail Content",
     date: new Date("2020-01-01T02:00:00"),
   },
   {
@@ -58,7 +58,7 @@ const mails: Mail[] = [
     to: ["qqq.qqq@example.com"],
     subject: "[dev] Postfix 3.1.12 / 3.2.9 / 3.3.4 / 3.4.5",
     attachments: [],
-    content: "MAIL 2",
+    content: "Mail Content",
     date: new Date("2021-01-01T15:10:00"),
   },
   {
@@ -67,7 +67,7 @@ const mails: Mail[] = [
     to: ["ppp@example.com"],
     subject: "Re: [Github] Brush-up on loading animation",
     attachments: [],
-    content: "MAIL 2",
+    content: "Mail Content",
     date: new Date("2021-01-01T16:10:00"),
   },
   {
@@ -78,7 +78,7 @@ const mails: Mail[] = [
     attachments: [
       { name: "file_one.pdf", url: "https://link-to-attachment-1.com" },
     ],
-    content: "MAIL 2",
+    content: "Mail Content",
     date: new Date("2021-01-01T17:10:00"),
   },
   {
@@ -89,7 +89,7 @@ const mails: Mail[] = [
     attachments: [
       { name: "file_one.pdf", url: "https://link-to-attachment-1.com" },
     ],
-    content: "MAIL 2",
+    content: "Mail Content",
     date: new Date("2019-12-31T17:10:00"),
   },
   {
@@ -98,7 +98,7 @@ const mails: Mail[] = [
     to: ["Pablo-Diego-Jose-Fransisco@example.com"],
     subject: "[info:888] ABC EQUIPMENT COMPANY",
     attachments: [],
-    content: "MAIL 2",
+    content: "Mail Content",
     date: new Date("2019-12-31T17:20:00"),
   },
 ];
