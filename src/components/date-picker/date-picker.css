@@ -1,5 +1,5 @@
 .DateInput {
-  width: 100px;
+  width: 80px;
 }
 
 .DateInput_input {
@@ -9,7 +9,7 @@
 
 .DateInput,
 .DateRangePickerInput_arrow {
-  margin-right: 8px;
+  margin-right: 2px;
 }
 
 .DateRangePickerInput_calendarIcon:focus {

@@ -8,11 +8,11 @@ import {
 import { ThemeProvider } from "@material-ui/styles";
 import { grey } from "@material-ui/core/colors";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { createStyles, Paper, Divider } from "@material-ui/core";
+import { createStyles, Paper, Divider, useMediaQuery } from "@material-ui/core";
 import subYears from "date-fns/subYears";
 
-import DatePicker from "./components/DatePicker";
-import MailTable from "./components/MailTable";
+import DatePicker from "./components/date-picker/DatePicker";
+import MailTable from "./components/results/MailTable";
 import ResultsCount from "./components/ResultsCount";
 import Logo from "./components/Logo";
 import MailCard from "./components/MailCard";
@@ -31,7 +31,7 @@ const theme = createMuiTheme({
 
 const styles = (theme: Theme) =>
   createStyles({
-    root: { minHeight: "100%", padding: 50 },
+    root: { minHeight: "100%", padding: "50px 20px 50px 20px" },
     datePicker: {},
     resultsCount: { marginTop: 30, marginBottom: 10 },
     table: { marginTop: 5 },
@@ -49,6 +49,7 @@ function App(props: AppProps) {
   const [end, setEnd] = React.useState<Date | null>(endDate);
   const [filteredMails, setFilteredMails] = React.useState<Mail[]>([]);
   const [selectedMails, setSelectedMails] = React.useState<Mail[]>([]);
+  const isDesktop = useMediaQuery("(min-width:900px)");
 
   const search = (start: Date | null, end: Date | null) => {
     setStart(start);
@@ -80,6 +81,7 @@ function App(props: AppProps) {
           initStart={start}
           initEnd={end}
           onSearchClick={search}
+          orientation={isDesktop ? "horizontal" : "vertical"}
         />
         <ResultsCount
           className={classes.resultsCount}
@@ -98,6 +100,7 @@ function App(props: AppProps) {
             end={end}
             selectedMails={selectedMails}
             onSelectionChange={setSelectedMails}
+            isDesktop={isDesktop}
           />
         )}
         <div className={classes.mailCards}>

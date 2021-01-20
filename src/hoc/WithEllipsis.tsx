@@ -5,27 +5,35 @@ import {
   WithStyles,
   createStyles,
 } from "@material-ui/core/styles";
-import { Badge } from "@material-ui/core";
 import { InView } from "react-intersection-observer";
+import classNames from "classnames";
 
 const styles = (theme: Theme) =>
   createStyles({
-    root: { display: "flex", justifyContent: "space-between" },
+    root: { display: "flex", justifyContent: "space-between", width: "100%" },
     content: {
       whiteSpace: "nowrap",
       overflow: "hidden",
       textOverflow: "ellipsis",
     },
-    hiddenCount: { zIndex: 0 },
-    hiddenCountBadge: {
+    hiddenCount: {
+      display: "flex",
       backgroundColor: theme.palette.grey[500],
       color: "white",
-      borderRadius: 5,
+      borderRadius: 4,
+      // height: 20,
+      // width: 25,
+    },
+    hiddenCountLabel: {
+      padding: "0px 3px 0px 3px",
+      margin: "auto",
       fontWeight: "bold",
+      fontSize: 13,
     },
   });
 
 interface WithEllipsisProps extends WithStyles<typeof styles> {
+  className?: string;
   maxWidth: number;
   title?: string;
   separator?: string | React.ReactElement;
@@ -35,6 +43,7 @@ interface WithEllipsisProps extends WithStyles<typeof styles> {
 function WithEllipsis(props: React.PropsWithChildren<WithEllipsisProps>) {
   const {
     classes,
+    className,
     children,
     maxWidth,
     title,
@@ -81,16 +90,13 @@ function WithEllipsis(props: React.PropsWithChildren<WithEllipsisProps>) {
   };
 
   return (
-    <div className={classes.root}>
+    <div className={classNames(classes.root, className)}>
       <div className={classes.content} style={{ maxWidth }} title={title}>
         {renderChildren()}
       </div>
       {showHiddenCount && Array.isArray(children) && hiddenCount > 0 ? (
         <div className={classes.hiddenCount} title={title}>
-          <Badge
-            classes={{ badge: classes.hiddenCountBadge }}
-            badgeContent={`+${hiddenCount}`}
-          ></Badge>
+          <span className={classes.hiddenCountLabel}>+{hiddenCount}</span>
         </div>
       ) : null}
     </div>
