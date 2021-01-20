@@ -10,12 +10,3 @@ I started by implementing the DatePicker component. First I implemented it using
 Then I implemented the Search Results part. I decided to use the `Table` component from `material-ui`. To handle the long texts ellipsis and remaining items count (+1, +2 ...), I implemented a `HOC` (cf. `WithEllipsis`) that uses the `IntersectionObserver` API to detect and compute the number of hidden items.
 
 To be able to inspect multiple mails at once, I decided to introduce an additional column with `checkboxes`. Each selected entry will be displayed below the table, in a separate `Card`.
-
-## Getting Started
-
-```
-npm install
-npm start
-```
-
-Tests are run with `npm test`
