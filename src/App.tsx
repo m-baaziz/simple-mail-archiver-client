@@ -31,11 +31,16 @@ const theme = createMuiTheme({
 
 const styles = (theme: Theme) =>
   createStyles({
-    root: { minHeight: "100%", padding: "50px 20px 50px 20px" },
+    root: {
+      display: "flex",
+      flexDirection: "column",
+      minHeight: "100%",
+      padding: "50px 20px 50px 20px",
+    },
     datePicker: {},
     resultsCount: { marginTop: 30, marginBottom: 10 },
     table: { marginTop: 5 },
-    logo: { marginTop: 10, height: "60%" },
+    logo: { flexGrow: 2, marginTop: 10, paddingBottom: "15%" },
     mailCards: { marginTop: 40 },
   });
 
@@ -69,8 +74,6 @@ function App(props: AppProps) {
     setSelectedMails(selectedMails.filter((mail) => mail.id !== id));
   };
 
-  console.log("render");
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -93,21 +96,23 @@ function App(props: AppProps) {
             <Logo className={classes.logo} />
           </>
         ) : (
-          <MailTable
-            className={classes.table}
-            mails={filteredMails}
-            start={start}
-            end={end}
-            selectedMails={selectedMails}
-            onSelectionChange={setSelectedMails}
-            isDesktop={isDesktop}
-          />
+          <>
+            <MailTable
+              className={classes.table}
+              mails={filteredMails}
+              start={start}
+              end={end}
+              selectedMails={selectedMails}
+              onSelectionChange={setSelectedMails}
+              isDesktop={isDesktop}
+            />
+            <div className={classes.mailCards}>
+              {selectedMails.map((mail) => (
+                <MailCard key={mail.id} mail={mail} onClose={handleCloseMail} />
+              ))}
+            </div>
+          </>
         )}
-        <div className={classes.mailCards}>
-          {selectedMails.map((mail) => (
-            <MailCard key={mail.id} mail={mail} onClose={handleCloseMail} />
-          ))}
-        </div>
       </Paper>
     </ThemeProvider>
   );

@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-
-import { Mail } from "./models/Mail";
+import { Mail, sortMails } from "./Mail";
 
 const mails: Mail[] = [
   {
@@ -24,15 +23,14 @@ const mails: Mail[] = [
     content: "MAIL 2",
     date: new Date("2021-01-12T15:10:00"),
   },
-  {
-    id: uuidv4(),
-    from: "cc.bbbb@example.com",
-    to: ["xxx@example.com", "aaa@example.com", "bbb@example.com"],
-    subject: '[web:333] "Web Contact"',
-    attachments: [],
-    content: "MAIL 2",
-    date: new Date("2020-03-25T17:10:00"),
-  },
 ];
 
-export default mails;
+test("sort mails", () => {
+  const sortedByFromAsc = sortMails(mails, "from", "asc");
+  const sortedByFromDesc = sortMails(mails, "from", "desc");
+  const sortedByDate = sortMails(mails, "date", "asc");
+
+  expect(sortedByFromAsc).toEqual(mails);
+  expect(sortedByFromDesc[0]).toEqual(mails[1]);
+  expect(sortedByDate[0]).toEqual(mails[1]);
+});

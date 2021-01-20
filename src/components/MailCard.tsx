@@ -58,7 +58,11 @@ function MailCard(props: MailCardProps) {
           </Avatar>
         }
         action={
-          <IconButton aria-label="close" onClick={handleCloseClick}>
+          <IconButton
+            aria-label="close"
+            role="close"
+            onClick={handleCloseClick}
+          >
             <CloseIcon />
           </IconButton>
         }
