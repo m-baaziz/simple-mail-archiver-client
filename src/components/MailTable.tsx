@@ -14,6 +14,7 @@ import {
   TableRow,
   Paper,
   SvgIcon,
+  Checkbox,
 } from "@material-ui/core";
 import classNames from "classnames";
 
@@ -72,6 +73,8 @@ interface MailTableProps extends WithStyles<typeof styles> {
   mails: Mail[];
   start: Date | null;
   end: Date | null;
+  selectedMails: Mail[];
+  onSelectionChange: (selectedMails: Mail[]) => void;
 }
 
 interface HeadTableCell {
@@ -80,7 +83,7 @@ interface HeadTableCell {
 }
 
 function MailTable(props: MailTableProps) {
-  const { classes, className, mails } = props;
+  const { classes, className, mails, selectedMails, onSelectionChange } = props;
 
   const [sortKey, setSortKey] = React.useState<SortKey | null>("date");
   const [sortOrder, setSortOrder] = React.useState<SortOrder>("desc");
@@ -103,6 +106,34 @@ function MailTable(props: MailTableProps) {
     }
   };
 
+  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (selectedMails.length === 0) {
+      onSelectionChange([...mails]);
+      return;
+    }
+    onSelectionChange([]);
+  };
+
+  const handleCheckboxClick = (id: string) => (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const mailToAdd = mails.find((mail) => mail.id === id);
+    if (!mailToAdd) return;
+    if (selectedMails.find((mail) => mail.id === id)) {
+      onSelectionChange([...selectedMails.filter((mail) => mail.id !== id)]);
+      return;
+    }
+    onSelectionChange([...selectedMails, mailToAdd]);
+  };
+
+  const handleCellClick = (id: string) => (
+    event: React.MouseEvent<HTMLTableHeaderCellElement, MouseEvent>
+  ) => {
+    const mailToAdd = mails.find((mail) => mail.id === id);
+    if (!mailToAdd) return;
+    onSelectionChange([mailToAdd]);
+  };
+
   const headers: HeadTableCell[] = [
     { id: "from", label: "From" },
     { id: "to", label: "To" },
@@ -116,6 +147,21 @@ function MailTable(props: MailTableProps) {
         <Table size="small" aria-label="mails table">
           <TableHead classes={{ root: classes.tableHead }}>
             <TableRow>
+              <TableCell padding="checkbox">
+                <Checkbox
+                  indeterminate={
+                    selectedMails.length > 0 &&
+                    selectedMails.length < sortedMails.length
+                  }
+                  checked={
+                    sortedMails.length > 0 &&
+                    selectedMails.length === sortedMails.length
+                  }
+                  onChange={handleSelectAllClick}
+                  color="default"
+                  inputProps={{ "aria-label": "select all mails" }}
+                />
+              </TableCell>
               {headers.map((header) => (
                 <TableCell
                   key={header.id}
@@ -156,19 +202,31 @@ function MailTable(props: MailTableProps) {
           <TableBody>
             {sortedMails.map((mail) => (
               <TableRow
-                key={`${mail.from}-${mail.date.getTime()}`}
+                key={mail.id}
                 classes={{ hover: classes.rowHover }}
                 hover
               >
+                <TableCell padding="checkbox">
+                  <Checkbox
+                    checked={
+                      selectedMails.findIndex((m) => m.id === mail.id) !== -1
+                    }
+                    inputProps={{ "aria-labelledby": mail.subject }}
+                    onChange={handleCheckboxClick(mail.id)}
+                    color="default"
+                  />
+                </TableCell>
                 <TableCell
                   classes={{ root: classes.tableBodyCell }}
                   align="left"
+                  onClick={handleCellClick(mail.id)}
                 >
                   {mail.from}
                 </TableCell>
                 <TableCell
                   classes={{ root: classes.tableBodyCell }}
                   align="left"
+                  onClick={handleCellClick(mail.id)}
                 >
                   <WithEllipsis
                     maxWidth={150}
@@ -182,10 +240,11 @@ function MailTable(props: MailTableProps) {
                 <TableCell
                   classes={{ root: classes.tableBodyCell }}
                   align="left"
+                  onClick={handleCellClick(mail.id)}
                 >
                   <div className={classes.subjectContainer}>
                     <div className={classes.subject}>{mail.subject}</div>
-                    {mail.attachment ? (
+                    {mail.attachments.length > 0 ? (
                       <div className={classes.attachmentIconContainer}>
                         <SvgIcon
                           className={classes.attachmentIcon}
@@ -199,6 +258,7 @@ function MailTable(props: MailTableProps) {
                 <TableCell
                   classes={{ root: classes.tableBodyCell }}
                   align="left"
+                  onClick={handleCellClick(mail.id)}
                 >
                   {shortDateFormat(mail.date)}
                 </TableCell>

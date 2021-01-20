@@ -48,14 +48,18 @@ const styles = (theme: Theme) =>
 
 interface DatePickerProps extends WithStyles<typeof styles> {
   className?: string;
+  initStart?: Date | null;
+  initEnd?: Date | null;
   onSearchClick: (start: Date | null, end: Date | null) => void;
 }
 
 function DatePicker(props: DatePickerProps) {
-  const { classes, className, onSearchClick } = props;
+  const { classes, className, initStart, initEnd, onSearchClick } = props;
 
-  const [startDate, setStartDate] = React.useState<Moment | null>(moment());
-  const [endDate, setEndDate] = React.useState<Moment | null>(moment());
+  const [startDate, setStartDate] = React.useState<Moment | null>(
+    moment(initStart)
+  );
+  const [endDate, setEndDate] = React.useState<Moment | null>(moment(initEnd));
   const [focusedInput, setFocusedInput] = React.useState<any>();
 
   const handleDatesChange = ({

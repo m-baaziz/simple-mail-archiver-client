@@ -9,12 +9,15 @@ import { ThemeProvider } from "@material-ui/styles";
 import { grey } from "@material-ui/core/colors";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, Paper, Divider } from "@material-ui/core";
+import subYears from "date-fns/subYears";
 
 import DatePicker from "./components/DatePicker";
 import MailTable from "./components/MailTable";
 import ResultsCount from "./components/ResultsCount";
 import Logo from "./components/Logo";
+import MailCard from "./components/MailCard";
 
+import mails from "./data";
 import { Mail } from "./models/Mail";
 
 const theme = createMuiTheme({
@@ -28,62 +31,56 @@ const theme = createMuiTheme({
 
 const styles = (theme: Theme) =>
   createStyles({
-    root: { height: "100%", padding: 50 },
+    root: { minHeight: "100%", padding: 50 },
     datePicker: {},
     resultsCount: { marginTop: 30, marginBottom: 10 },
     table: { marginTop: 5 },
     logo: { marginTop: 10, height: "60%" },
+    mailCards: { marginTop: 40 },
   });
-
-const mails: Mail[] = [
-  {
-    from: "aaa@example.com",
-    to: ["zzz.zzz@example.com"],
-    subject: "[ HR-888 ] Notice of official announcement",
-    attachment: "https://link-to-attachment-1.com",
-    content: "MAIL 1",
-    date: new Date("2021-01-19T15:20:00Z"),
-  },
-  {
-    from: "bbb.bbbb@example.com",
-    to: ["yyy@example.com"],
-    subject: '[web:333] "Web Contact"',
-    content: "MAIL 2",
-    date: new Date("2021-01-12T15:10:00Z"),
-  },
-  {
-    from: "cc.bbbb@example.com",
-    to: ["xxx@example.com", "aaa@example.com", "bbb@example.com"],
-    subject: '[web:333] "Web Contact"',
-    content: "MAIL 2",
-    date: new Date("2019-03-25T17:10:00Z"),
-  },
-];
 
 interface AppProps extends WithStyles<typeof styles> {}
 
 function App(props: AppProps) {
   const { classes } = props;
-  const [start, setStart] = React.useState<Date | null>(null);
-  const [end, setEnd] = React.useState<Date | null>(null);
+  const endDate = new Date();
+  const startDate = subYears(endDate, 1);
+  const [start, setStart] = React.useState<Date | null>(startDate);
+  const [end, setEnd] = React.useState<Date | null>(endDate);
+  const [filteredMails, setFilteredMails] = React.useState<Mail[]>([]);
+  const [selectedMails, setSelectedMails] = React.useState<Mail[]>([]);
 
   const search = (start: Date | null, end: Date | null) => {
-    console.log("start = ", start, " end = ", end);
     setStart(start);
     setEnd(end);
   };
 
-  const filterMail = (mail: Mail) =>
-    (!start || mail.date >= start) && (!end || mail.date <= end);
+  React.useEffect(() => {
+    setFilteredMails(
+      mails.filter(
+        (mail: Mail) =>
+          (!start || mail.date >= start) && (!end || mail.date <= end)
+      )
+    );
+  }, [start, end]);
 
-  const filteredMails = [...mails].filter(filterMail);
+  const handleCloseMail = (id: string) => {
+    setSelectedMails(selectedMails.filter((mail) => mail.id !== id));
+  };
+
+  console.log("render");
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Paper className={classes.root}>
         {/* initStart initEnd */}
-        <DatePicker className={classes.datePicker} onSearchClick={search} />
+        <DatePicker
+          className={classes.datePicker}
+          initStart={start}
+          initEnd={end}
+          onSearchClick={search}
+        />
         <ResultsCount
           className={classes.resultsCount}
           count={filteredMails.length}
@@ -99,8 +96,15 @@ function App(props: AppProps) {
             mails={filteredMails}
             start={start}
             end={end}
+            selectedMails={selectedMails}
+            onSelectionChange={setSelectedMails}
           />
         )}
+        <div className={classes.mailCards}>
+          {selectedMails.map((mail) => (
+            <MailCard key={mail.id} mail={mail} onClose={handleCloseMail} />
+          ))}
+        </div>
       </Paper>
     </ThemeProvider>
   );

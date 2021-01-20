@@ -1,9 +1,15 @@
+export type Attachment = {
+  name: string,
+  url: string,
+}
+
 export type Mail = {
+  id: string,
   from: string,
   to: string[],
   subject: string,
   content: string,
-  attachment?: string,
+  attachments: Attachment[],
   date: Date
 }
 
