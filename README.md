@@ -12,7 +12,3 @@ npm start
 ```
 
 run tests with `npm test`
-
-### -> [Report](REPORT.md)
-
-### -> [Improvements](IMPROVEMENTS.md)
